@@ -1,104 +1,104 @@
 
 skeleton.png
-size: 292,965
+size: 361,857
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 visit/Torso
-  rotate: true
-  xy: 2, 713
-  size: 124, 184
-  orig: 124, 184
-  offset: 0, 0
+  rotate: false
+  xy: 207, 55
+  size: 126, 184
+  orig: 130, 184
+  offset: 2, 0
   index: -1
 visit/back_bicep
-  rotate: false
-  xy: 87, 274
-  size: 67, 217
+  rotate: true
+  xy: 2, 261
+  size: 62, 207
   orig: 68, 217
-  offset: 1, 0
+  offset: 1, 10
   index: -1
 visit/back_calf
   rotate: false
-  xy: 2, 263
-  size: 83, 243
+  xy: 269, 611
+  size: 83, 244
   orig: 83, 244
   offset: 0, 0
   index: -1
 visit/back_foot
   rotate: false
-  xy: 2, 2
-  size: 129, 110
-  orig: 129, 110
-  offset: 0, 0
+  xy: 224, 352
+  size: 135, 104
+  orig: 138, 113
+  offset: 2, 0
   index: -1
 visit/back_forearm
-  rotate: false
-  xy: 181, 292
+  rotate: true
+  xy: 2, 325
   size: 93, 214
-  orig: 93, 214
+  orig: 96, 217
   offset: 0, 0
   index: -1
 visit/back_thigh
-  rotate: false
-  xy: 188, 508
-  size: 102, 220
-  orig: 102, 220
+  rotate: true
+  xy: 2, 492
+  size: 105, 220
+  orig: 106, 220
   offset: 0, 0
   index: -1
 visit/front_bicep
   rotate: true
-  xy: 2, 839
-  size: 124, 189
+  xy: 2, 23
+  size: 122, 189
   orig: 124, 189
-  offset: 0, 0
+  offset: 2, 0
   index: -1
 visit/front_calf
-  rotate: false
-  xy: 193, 730
-  size: 90, 233
-  orig: 90, 233
-  offset: 0, 0
+  rotate: true
+  xy: 2, 599
+  size: 99, 234
+  orig: 104, 243
+  offset: 2, 4
   index: -1
 visit/front_foot
   rotate: false
-  xy: 145, 40
-  size: 134, 109
-  orig: 134, 109
+  xy: 218, 241
+  size: 139, 109
+  orig: 140, 112
   offset: 0, 0
   index: -1
 visit/front_forearm
-  rotate: false
-  xy: 110, 493
-  size: 69, 218
-  orig: 69, 218
-  offset: 0, 0
+  rotate: true
+  xy: 2, 420
+  size: 70, 220
+  orig: 73, 222
+  offset: 3, 0
   index: -1
 visit/front_thigh
-  rotate: false
-  xy: 2, 508
-  size: 106, 203
-  orig: 107, 203
-  offset: 0, 0
+  rotate: true
+  xy: 2, 147
+  size: 112, 203
+  orig: 117, 203
+  offset: 2, 0
   index: -1
 visit/head
   rotate: false
-  xy: 156, 151
-  size: 125, 139
-  orig: 125, 139
-  offset: 0, 0
+  xy: 2, 700
+  size: 265, 155
+  orig: 338, 173
+  offset: 25, 17
   index: -1
 visit/hips
-  rotate: false
-  xy: 2, 114
-  size: 141, 113
-  orig: 141, 113
-  offset: 0, 0
+  rotate: true
+  xy: 238, 458
+  size: 151, 121
+  orig: 163, 133
+  offset: 6, 5
   index: -1
 visit/neck
   rotate: true
-  xy: 87, 229
-  size: 43, 52
-  orig: 43, 52
+  xy: 193, 2
+  size: 51, 59
+  orig: 51, 59
   offset: 0, 0
   index: -1
