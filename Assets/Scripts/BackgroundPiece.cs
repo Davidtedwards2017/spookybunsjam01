@@ -4,26 +4,26 @@ using UnityEngine;
 
 public class BackgroundPiece : MonoBehaviour
 {
+    public SpriteRenderer Renderer;
 
-    public Transform StartAnchor;
-    public Transform EndAnchor;
-
-    public float DistanceInBackground;
-
-    public BackgroundPiece Spawn(Vector3 spawnLocation)
+    public float Width()
     {
-        return null;
+        return Renderer.bounds.size.x;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public Vector3 GetLeftPoint()
     {
-        
+        return transform.position - new Vector3(Renderer.bounds.extents.x, 0, 0);
     }
 
-    // Update is called once per frame
-    void Update()
+    public Vector3 GetRightPoint()
     {
-        
+        return transform.position + new Vector3(Renderer.bounds.extents.x, 0, 0);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(GetLeftPoint(), GetRightPoint());
     }
 }

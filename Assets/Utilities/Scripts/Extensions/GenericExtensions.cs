@@ -65,6 +65,17 @@ namespace Utilites
             return temp;
         }
 
+        public static T[] ReverseShift<T>(this T[] collection)
+        {
+            T[] temp = new T[collection.Length];
+            for (int i = collection.Length - 1; i > 0; i--)
+            {
+                temp[i - 1] = collection[i];
+            }
+
+            return temp;
+        }
+
         public static void AddIfUnique<T>(this List<T> collection, T entry)
         {
             if (entry != null && !collection.Contains(entry))
