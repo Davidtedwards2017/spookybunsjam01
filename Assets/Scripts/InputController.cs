@@ -6,24 +6,23 @@ using UnityEngine;
 [RequireComponent(typeof(InControlManager))]
 public class InputController : Singleton<InputController>
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public static InputDevice GetInputDevice(int deviceIndex)
     {
         if (InputManager.Devices.Count <= deviceIndex) return null;
         return InputManager.Devices[deviceIndex];
     }
-          
+        
+    public bool GetAnyInput()
+    {
+        return GetAnyDeviceInput(GetInputDevice(0)) || Input.anyKeyDown;
+    }
+
+    public bool GetAnyDeviceInput(InputDevice device)
+    {
+        if (device == null) return false;
+        return device.AnyButton;
+    }
+
     public bool GetJumpInput()
     {
         return GetJumpInput(0) || Input.GetKeyDown(KeyCode.UpArrow);

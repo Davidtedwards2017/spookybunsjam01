@@ -7,7 +7,7 @@ using Utilites;
 public class RepeatingBackground : MonoBehaviour
 {
     public Camera mainCamera;
-    public BackgroundPiece[] BackgroundPrefab;
+    public BackgroundPiece prefab;
 
     private BackgroundPiece[] Pieces;
     private Vector2 screenBounds;
@@ -16,7 +16,11 @@ public class RepeatingBackground : MonoBehaviour
 
     private const int size = 3;
 
+    [Range(-1,1)]
+    public float parallaxEffect;
+
     public Vector3 StartSpawnOffset;
+
 
     // Start is called before the first frame update
     void Start()
@@ -26,8 +30,6 @@ public class RepeatingBackground : MonoBehaviour
         lastPosition = mainCamera.transform.position;
 
         Pieces = new BackgroundPiece[3];
-
-        var prefab = BackgroundPrefab[0];
         
         Pieces[1] = Spawn(prefab, mainCamera.transform.position + StartSpawnOffset, "B");
         Pieces[0] = SpawnToLeftOf(prefab, Pieces[1], Vector3.zero,  "A");
@@ -37,6 +39,12 @@ public class RepeatingBackground : MonoBehaviour
     private void LateUpdate()
     {
         var delta = mainCamera.transform.position - lastPosition;
+
+        var displacement = new Vector3(delta.x * parallaxEffect, 0, 0);
+        foreach (var piece in Pieces)
+        {
+            piece.transform.position += displacement;
+        }
 
         if (delta.x > 0) //camera moving right so check left most piece
         {
@@ -65,13 +73,7 @@ public class RepeatingBackground : MonoBehaviour
         
         lastPosition = mainCamera.transform.position;
     }
-
-    public void ShiftLeft()
-    {
-
-    }
-
-
+    
     private BackgroundPiece Spawn(BackgroundPiece prefab, Vector3 position, string suffix)
     {
         var instance = Instantiate(prefab, position, Quaternion.identity);

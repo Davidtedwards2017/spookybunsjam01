@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
+using MonsterLove.StateMachine;
 
 public class RunnerCharacterController : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class RunnerCharacterController : MonoBehaviour
     [Range(0, 0.3f)] public float movementSmoothing = 0.05f;
     public bool airControl = false;
 
-    public Rigidbody2D rigidbody;
+    public Rigidbody2D Rigidbody;
 
     [Header("Events")]
     [Space]
@@ -34,6 +35,14 @@ public class RunnerCharacterController : MonoBehaviour
 
     public class BoolEvent : UnityEvent<bool> { }
 
+    public enum RunnerState
+    {
+        Inactive,
+        Running
+    }
+
+    private StateMachine<RunnerState> RunnerStateCtrl;
+    
 
     public void Awake()
     {
@@ -41,8 +50,14 @@ public class RunnerCharacterController : MonoBehaviour
         {
             onLandEvent = new UnityEvent();
         }
+
     }
 
+    private void Start()
+    {
+        RunnerStateCtrl = StateMachine<RunnerState>.Initialize(this);
+        RunnerStateCtrl.ChangeState(RunnerState.Inactive);
+    }
 
     public void FixedUpdate()
     {
@@ -93,17 +108,17 @@ public class RunnerCharacterController : MonoBehaviour
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, 2f, whatIsGround);
                 //targetVelocity = new Vector2(move * movementSpeed, rigidbody.velocity.y);
 
-                targetVelocity = Quaternion.FromToRotation(Vector3.up, hit.normal) * new Vector2(move * movementSpeed, rigidbody.velocity.y);
+                targetVelocity = Quaternion.FromToRotation(Vector3.up, hit.normal) * new Vector2(move * movementSpeed, Rigidbody.velocity.y);
                // targetVelocity = Vector2.Perpendicular(hit.normal) * targetVelocity.magnitude;
             }
             else
             {
-                targetVelocity = new Vector2(move * movementSpeed, rigidbody.velocity.y);
+                targetVelocity = new Vector2(move * movementSpeed, Rigidbody.velocity.y);
             }
 
             Debug.DrawRay(transform.position, targetVelocity * 3, Color.yellow);
 
-            rigidbody.velocity = Vector3.SmoothDamp(rigidbody.velocity, targetVelocity, ref velocity, movementSmoothing);
+            Rigidbody.velocity = Vector3.SmoothDamp(Rigidbody.velocity, targetVelocity, ref velocity, movementSmoothing);
         }
 
 
@@ -113,16 +128,29 @@ public class RunnerCharacterController : MonoBehaviour
         {
             AnimationController.SetTrigger("Jump");
             grounded = false;
-            rigidbody.AddForce(new Vector2(0f, jumpForce));
+            Rigidbody.AddForce(new Vector2(0f, jumpForce));
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void StartRunning()
     {
-        Move(
-            InputController.Instance.GetInputX(), 
-            InputController.Instance.GetJumpInput()
-            );
+        if(RunnerStateCtrl.IsOrWillBeState(RunnerState.Inactive))
+        {
+            RunnerStateCtrl.ChangeState(RunnerState.Running);
+        }
     }
+
+    #region states
+       
+    public void Inactive_Enter()
+    {
+
+    }
+
+    public void Running_Update()
+    {
+        Move(1, InputController.Instance.GetJumpInput());
+    }
+
+    #endregion
 }
