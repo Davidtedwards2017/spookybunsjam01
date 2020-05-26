@@ -1,0 +1,41 @@
+
+skeleton.png
+size: 685,506
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bicep01
+  rotate: true
+  xy: 311, 14
+  size: 109, 343
+  orig: 109, 343
+  offset: 0, 0
+  index: -1
+forearm01
+  rotate: false
+  xy: 586, 125
+  size: 97, 379
+  orig: 97, 379
+  offset: 0, 0
+  index: -1
+hand_grab01
+  rotate: true
+  xy: 2, 231
+  size: 273, 307
+  orig: 273, 307
+  offset: 0, 0
+  index: -1
+hand_grab01_thumb
+  rotate: false
+  xy: 311, 197
+  size: 273, 307
+  orig: 273, 307
+  offset: 0, 0
+  index: -1
+hand_idle01-1
+  rotate: true
+  xy: 2, 2
+  size: 227, 307
+  orig: 227, 307
+  offset: 0, 0
+  index: -1

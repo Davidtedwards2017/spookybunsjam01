@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utilites;
 
-public class RoofSpawner : MonoBehaviour
+public class RoofSpawner : Singleton<RoofSpawner>
 {
     public List<RoofSection> SectionPrefabs;
     public int MaxCountInFront = 2;
@@ -11,7 +11,7 @@ public class RoofSpawner : MonoBehaviour
     public int RoofSectionLimit = 5;
     public int SpawnCount = 0;
 
-    public RoofSection currentSection;
+    private RoofSection currentSection;
 
     private FilteredRandom<RoofSection> RandomSection;
 
@@ -23,6 +23,11 @@ public class RoofSpawner : MonoBehaviour
         currentSection = SectionPrefabs[0].Spawn(Vector3.zero, "|" + SpawnCount);
         SpawnNewSection(RandomSection.GetNextRandom());
         SpawnNewSection(RandomSection.GetNextRandom());
+    }
+
+    public RoofSection GetNextRoofSection()
+    {
+        return currentSection.NextSection;
     }
 
     private void SpawnNewSection(RoofSection nextSectionPrefab)

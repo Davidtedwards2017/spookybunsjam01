@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Linq;
 
 public class RoofSection : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class RoofSection : MonoBehaviour
 
     public RoofSection NextSection;
     public RoofSection PreviousSection;
+
+    private BoxCollider2D[] RoofColliders;
 
 
     [Header("Events")]
@@ -33,6 +36,11 @@ public class RoofSection : MonoBehaviour
         return section;
     }
 
+    private void Awake()
+    {
+        RoofColliders = GetComponentsInChildren<BoxCollider2D>().Where(col => !col.isTrigger).ToArray();
+    }
+
     public RoofSection Spawn(Vector3 position, string suffix)
     {
         position = position - StartAnchor.position;
@@ -42,6 +50,39 @@ public class RoofSection : MonoBehaviour
         return go.GetComponent<RoofSection>();
     }
 
+    public bool GetSpawnEdge(out Vector3 leftPoint, out Vector3 rightPoint)
+    {
+        leftPoint = Vector3.zero;
+        rightPoint = Vector3.zero;
+
+        if (!RoofColliders.Any())
+        {
+            return false;
+        }
+
+
+        var col = RoofColliders.First();
+
+        var top = col.bounds.center.y + col.bounds.extents.y;
+        var left = col.bounds.center.x + col.bounds.extents.x;
+        var right = col.bounds.center.x - col.bounds.extents.x;
+
+
+        leftPoint = new Vector3(left, top);
+        rightPoint = new Vector3(right, top);
+
+        return true;
+    }
+
+    private void Update()
+    {
+        Vector3 left;
+        Vector3 right;
+        if(GetSpawnEdge(out left, out right))
+        {
+            Debug.DrawLine(left, right, Color.red);
+        }
+    }
 
     public Vector3 GetEndPosition()
     {

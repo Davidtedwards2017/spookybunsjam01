@@ -7,7 +7,7 @@ using MonsterLove.StateMachine;
 
 public class RunnerCharacterController : MonoBehaviour
 {
-
+    public float DistanceTraveled = 0;
     public float jumpForce = 400f;
 
     private const float GROUNDED_RADIUS = 0.2f;
@@ -21,6 +21,9 @@ public class RunnerCharacterController : MonoBehaviour
     private Vector3 velocity = Vector3.zero;
 
     public Animator AnimationController;
+
+    public float RespawnHeightOffset = 3.0f;
+    private const float SpawnEdgePercent = 0.2f;
 
     [Range(0, 200)] public float movementSpeed = 10f;
     [Range(0, 0.3f)] public float movementSmoothing = 0.05f;
@@ -38,7 +41,9 @@ public class RunnerCharacterController : MonoBehaviour
     public enum RunnerState
     {
         Inactive,
-        Running
+        Running,
+        Fallen,
+        Respawning,
     }
 
     private StateMachine<RunnerState> RunnerStateCtrl;
@@ -149,7 +154,43 @@ public class RunnerCharacterController : MonoBehaviour
 
     public void Running_Update()
     {
+        if(transform.position.y <= GameStateController.Instance.KillZoneYValue)
+        {
+            RunnerStateCtrl.ChangeState(RunnerState.Fallen);
+            return;
+        }
+        
+
         Move(1, InputController.Instance.GetJumpInput());
+    }
+
+    public IEnumerator Fallen_Enter()
+    {
+        yield return new WaitForSeconds(0.5f);
+        RunnerStateCtrl.ChangeState(RunnerState.Respawning);
+    }
+
+    
+    public IEnumerator Respawning_Enter()
+    {
+        AnimationController.SetFloat("velocity.mag", 0);
+
+        var nextRoof = RoofSpawner.Instance.GetNextRoofSection();
+
+        Vector3 left;
+        Vector3 right;
+        while (!nextRoof.GetSpawnEdge(out left, out right))
+        {
+            Debug.LogError("Failing to get next roof spawn edge");
+            yield return new WaitForEndOfFrame();
+        }
+
+        Vector3 spawnPosition = Vector3.Lerp(left, right, SpawnEdgePercent) + (Vector3.up * RespawnHeightOffset);
+        transform.position = spawnPosition;
+
+        yield return new WaitForSeconds(1.0f);
+
+        RunnerStateCtrl.ChangeState(RunnerState.Running);
     }
 
     #endregion

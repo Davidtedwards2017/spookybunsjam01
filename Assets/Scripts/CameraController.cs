@@ -17,7 +17,9 @@ public class CameraController : Singleton<CameraController>
     private float yMargin = 1f; // Distance in the y axis the player can move before the camera follows.
     public float xSmooth = 8f; // How smoothly the camera catches up with it's target movement in the x axis.
     public float ySmooth = 8f; // How smoothly the camera catches up with it's target movement in the y axis.
-    
+
+    public float MinY = -10;
+
     public Transform CameraStartingAnchor;
     public Transform Focus;
     public Vector3 FocusOffset;
@@ -38,7 +40,11 @@ public class CameraController : Singleton<CameraController>
         transform.position = CameraStartingAnchor.position + FocusOffset;
     }
 
-
+    private bool InBounds()
+    {
+        return Focus.transform.position.y >= MinY;
+    }
+    
     protected void TrackPosition(Vector3 target)
     {
         // By default the target x and y coordinates of the camera are it's current x and y coordinates.
@@ -83,7 +89,7 @@ public class CameraController : Singleton<CameraController>
     #region state
     public void notfollowing_FixedUpdate()
     {
-        if(Focus != null)
+        if(Focus != null && InBounds())
         {
             StateCtrl.ChangeState(State.following);
             return;
@@ -92,7 +98,7 @@ public class CameraController : Singleton<CameraController>
 
     public void following_FixedUpdate()
     {
-        if(Focus == null)
+        if(Focus == null || !InBounds())
         {
             StateCtrl.ChangeState(State.notfollowing);
             return;

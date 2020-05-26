@@ -5,6 +5,7 @@ using DG.Tweening;
 
 public class Module : MonoBehaviour {
 
+    protected CanvasGroup CanvasGroup;
     private bool _Active;
 
     public bool Active
@@ -27,28 +28,42 @@ public class Module : MonoBehaviour {
         }
     }
 
+
+    protected virtual void Awake()
+    {
+        CanvasGroup = GetComponent<CanvasGroup>();
+    }
+
     protected virtual void OnActivated()
     {
-
+        AnimateIn().Play();
     }
 
     protected virtual void OnDeactivated()
     {
+        AnimateOut().Play();
     }
 
-    //public Sequence AnimateIn()
-    //{
-    //    Sequence sequence = DOTween.Sequence();
-    //    //sequence.Append(GetComponent<CanvasGroup>().DOFade(1f, .3f));
-    //    return sequence;
-    //}
-    //
-    //public Sequence AnimateOut()
-    //{
-    //    Sequence sequence = DOTween.Sequence();
-    //    //sequence.Append(GetComponent<CanvasGroup>().DOFade(0f, .3f));
-    //    return sequence;
-    //}
+    public Sequence AnimateIn()
+    {
+        Sequence sequence = DOTween.Sequence();
+
+        if(CanvasGroup != null)
+        {
+            sequence.Append(CanvasGroup.DOFade(1f, .3f));
+        }
+        return sequence;
+    }
+    
+    public Sequence AnimateOut()
+    {
+        Sequence sequence = DOTween.Sequence();
+        if (CanvasGroup != null)
+        {
+            sequence.Append(CanvasGroup.DOFade(0f, .3f));
+        }
+        return sequence;
+    }
 
     public void SetPosition(Vector2 position)
     {
